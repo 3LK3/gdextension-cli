@@ -12,7 +12,10 @@ class CommandLineArguments:
         new_parser = subcommands.add_parser("new")
         new_parser.add_argument("name", type=str, help="Name of the new project")
         new_parser.add_argument(
-            "-g", "--godot-version", type=str, help="Godot version and branch name for template repositories"
+            "-g",
+            "--godot-version",
+            type=str,
+            help="Godot version and branch name for template repositories",
         )
 
         from_group = new_parser.add_mutually_exclusive_group(required=False)
