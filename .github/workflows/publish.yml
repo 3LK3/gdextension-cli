@@ -24,8 +24,8 @@ jobs:
     #    environment:
     #      name: pypi
     #      url: https://pypi.org/p/gdextension-cli
-    #    permissions:
-    #      id-token: write  # IMPORTANT: this permission is mandatory for trusted publishing
+    permissions:
+      id-token: write  # IMPORTANT: this permission is mandatory for trusted publishing
 
     runs-on: ubuntu-latest
 
