@@ -18,7 +18,7 @@ permissions:
 jobs:
   deploy:
 
-    environment: Production
+    environment: release
 
     #    environment:
     #      name: pypi
