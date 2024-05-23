@@ -21,9 +21,9 @@ permissions:
 jobs:
   deploy:
 
-    #    environment:
-    #      name: pypi
-    #      url: https://pypi.org/p/gdextension-cli
+    environment:
+      name: pypi
+      url: https://pypi.org/p/gdextension-cli
     permissions:
       id-token: write  # IMPORTANT: this permission is mandatory for trusted publishing
 
@@ -43,6 +43,6 @@ jobs:
         run: hatch build
       - name: Publish package
         uses: pypa/gh-action-pypi-publish@release/v1
-        with:
-          user: __token__
-          password: ${{ secrets.PYPI_API_TOKEN }}
+#        with:
+#          user: __token__
+#          password: ${{ secrets.PYPI_API_TOKEN }}
