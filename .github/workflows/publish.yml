@@ -9,11 +9,8 @@
 name: Build & Publish Python Package
 
 on:
-  workflow_dispatch:
-
-#on:
-#  release:
-#    types: [ published ]
+  release:
+    types: [ published ]
 
 permissions:
   contents: read
