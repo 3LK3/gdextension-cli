@@ -18,7 +18,7 @@ permissions:
 jobs:
   deploy:
 
-    environment: release
+    environment: Production
 
     #    environment:
     #      name: pypi
@@ -42,6 +42,6 @@ jobs:
         run: hatch build
       - name: Publish package
         uses: pypa/gh-action-pypi-publish@release/v1
-#        with:
-#          user: __token__
-#          password: ${{ secrets.PYPI_API_TOKEN }}
+        with:
+          #          user: __token__
+          password: ${{ secrets.PYPI_API_TOKEN }}
