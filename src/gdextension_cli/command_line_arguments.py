@@ -1,10 +1,23 @@
+"""
+Parser for command line arguments
+"""
+
 import argparse
 import pathlib
 
 
 class CommandLineArguments:
+    """
+    Contains definitions and parses command line arguments.
+    """
+
     def __init__(self):
         self._parser = argparse.ArgumentParser(prog="gdextension-cli")
+
+    def build(self):
+        """
+        Builds all subcommands and arguments
+        """
         subcommands = self._parser.add_subparsers(
             help="Choose a sub command", required=True
         )
@@ -35,34 +48,12 @@ class CommandLineArguments:
             help="Path to a local folder containing a project template",
         )
 
-        # from_subcommands = new_parser.add_subparsers(required=False)
-        #
-        # from_git_parser = from_subcommands.add_parser(
-        #     "from-git",
-        #     help="Create project using a project template from a git repository",
-        # )
-        # from_git_parser.add_argument(
-        #     "-u",
-        #     "--url",
-        #     type=str,
-        #     required=True,
-        #     default="https://github.com/3LK3/gdextension-template.git",
-        #     help="URL of a project template repository",
-        # )
-        #
-        # from_local_parser = from_subcommands.add_parser(
-        #     "from-local",
-        #     help="Create project using a project template from a local folder",
-        # )
-        # from_local_parser.add_argument(
-        #     "-p",
-        #     "--path",
-        #     type=pathlib.Path,
-        #     help="Path to a local folder containing a project template",
-        # )
-
         build_parser = subcommands.add_parser("build")
         build_parser.add_argument("path", type=str, help="Path of the project to build")
 
     def parse(self) -> argparse.Namespace:
+        """
+        Parses command line arguments.
+        :return:
+        """
         return self._parser.parse_args()

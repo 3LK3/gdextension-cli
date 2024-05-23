@@ -1,8 +1,12 @@
+"""
+gdextension_cli entry point with callable function main_cli()
+"""
+
 from .command_line_arguments import CommandLineArguments
 
 
 def main_cli():
-    """ gdextension-cli Main entry point
+    """gdextension-cli Main entry point
 
     new
     ---
