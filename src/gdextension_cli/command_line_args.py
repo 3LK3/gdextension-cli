@@ -1,0 +1,80 @@
+"""
+Parser for command line arguments
+"""
+
+import argparse
+import pathlib
+
+from .__version__ import __version__
+
+
+class CommandLineArgs:
+    """
+    Contains definitions and parses command line arguments.
+    """
+
+    def __init__(self):
+        self._parser = argparse.ArgumentParser(prog="gdextension-cli")
+        self._subcommands = self._parser.add_subparsers(
+            help="Choose a sub command", required=False, dest="subcommand"
+        )
+        self._parser.add_argument(
+            "-v", "--version", action="version", version=__version__
+        )
+
+    def create(self):
+        """Created all subcommands and arguments"""
+        self._create_command_new()
+        self._create_command_build()
+        return self
+
+    def _create_command_build(self):
+        """Creates the parser for the build project command"""
+        build_parser = self._subcommands.add_parser("build")
+        build_parser.add_argument("path", type=str, help="Path of the project to build")
+
+    def _create_command_new(self):
+        """Creates the parser for the new project command"""
+        new_parser = self._subcommands.add_parser("new")
+        new_parser.add_argument(
+            "-v", "--verbose", action="store_true", help="More output!"
+        )
+        new_parser.add_argument("name", type=str, help="Name of the new project")
+        new_parser.add_argument(
+            "-o",
+            "--output-path",
+            type=pathlib.Path,
+            required=False,
+            help="Output path of the project. Default: folder in current directory with name of the project",
+        )
+        new_parser.add_argument(
+            "-g",
+            "--godot-version",
+            type=str,
+            default="4.2",
+            help="Godot version and branch name for template repositories",
+        )
+
+        from_group = new_parser.add_mutually_exclusive_group(required=False)
+        from_group.add_argument(
+            "--from-git",
+            metavar="GIT_URL",
+            type=str,
+            required=False,
+            default="https://github.com/3LK3/gdextension-template.git",
+            help="URL of a project template repository",
+        )
+        from_group.add_argument(
+            "--from-local",
+            metavar="PATH",
+            type=pathlib.Path,
+            required=False,
+            help="Path to a local folder containing a project template",
+        )
+
+    def parse(self) -> argparse.Namespace:
+        """
+        Parses command line arguments.
+        :return: The namespace containing parsed arguments.
+        """
+        return self._parser.parse_args()
