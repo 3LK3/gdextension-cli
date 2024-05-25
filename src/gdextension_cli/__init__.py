@@ -3,26 +3,24 @@ gdextension_cli entry point with callable function main_cli()
 """
 
 import logging
-from pathlib import Path
 
 from .command_line_args import CommandLineArgs
-from .project import create_from_local_path
-from .project_options import CreateFromLocalPathOptions
+from .commands.new_project_from_local import NewProjectFromLocalCommand
 
 
 def main_cli():
     """gdextension-cli main entry point used in pyproject.toml"""
-    arguments = CommandLineArgs().create().parse()
-    initialize_logging(arguments.verbose)
+    command_line = CommandLineArgs()
+    args = command_line.create().parse()
 
-    print(arguments)  # FIXME remove later
+    initialize_logging(args.verbose if hasattr(args, "verbose") else logging.INFO)
 
-    match arguments.subcommand:
+    match args.subcommand:
         case "new":
-            if arguments.from_local:
-                _new_project_from_local(arguments)
-            elif arguments.from_git:
-                _new_project_from_git(arguments)
+            if args.from_local:
+                NewProjectFromLocalCommand.from_arguments(args).run()
+            elif args.from_git:
+                print("from_git: not implemented")
             else:
                 raise AssertionError(
                     "Expected arguments '--from-local' or '--from-git'"
@@ -30,29 +28,7 @@ def main_cli():
         case "build":
             print("BUILD")
         case _:
-            raise ValueError(f"Unknown subcommand: {arguments.subcommand}")
-
-
-def _new_project_from_git(args):
-    """
-    Runs the create project command based on given arguments.
-    :param args: Command line arguments
-    """
-    pass
-
-
-def _new_project_from_local(args):
-    """
-    Runs the create project command based on given arguments.
-    :param args: Command line arguments
-    """
-    options = CreateFromLocalPathOptions(
-        args.name,
-        args.output_path if args.output_path else Path.cwd() / args.name,
-        args.godot_version,
-        args.from_local,
-    )
-    create_from_local_path(options)
+            command_line.print_help()
 
 
 def initialize_logging(verbose: bool):

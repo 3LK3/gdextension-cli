@@ -13,11 +13,14 @@ class CommandLineArgs:
     Contains definitions and parses command line arguments.
     """
 
+    HELP_OUTPUT_PATH = (
+        "Output path of the project. "
+        "Default: folder in current directory with name of the project"
+    )
+
     def __init__(self):
         self._parser = argparse.ArgumentParser(prog="gdextension-cli")
-        self._subcommands = self._parser.add_subparsers(
-            help="Choose a sub command", required=False, dest="subcommand"
-        )
+        self._subcommands = self._parser.add_subparsers(dest="subcommand")
         self._parser.add_argument(
             "-v", "--version", action="version", version=__version__
         )
@@ -26,16 +29,17 @@ class CommandLineArgs:
         """Created all subcommands and arguments"""
         self._create_command_new()
         self._create_command_build()
+        self._subcommands.add_parser("help", help="Shows this help")
         return self
 
     def _create_command_build(self):
         """Creates the parser for the build project command"""
-        build_parser = self._subcommands.add_parser("build")
+        build_parser = self._subcommands.add_parser("build", help="Build a project")
         build_parser.add_argument("path", type=str, help="Path of the project to build")
 
     def _create_command_new(self):
         """Creates the parser for the new project command"""
-        new_parser = self._subcommands.add_parser("new")
+        new_parser = self._subcommands.add_parser("new", help="Create a new project")
         new_parser.add_argument(
             "-v", "--verbose", action="store_true", help="More output!"
         )
@@ -45,7 +49,7 @@ class CommandLineArgs:
             "--output-path",
             type=pathlib.Path,
             required=False,
-            help="Output path of the project. Default: folder in current directory with name of the project",
+            help=self.HELP_OUTPUT_PATH,
         )
         new_parser.add_argument(
             "-g",
@@ -78,3 +82,7 @@ class CommandLineArgs:
         :return: The namespace containing parsed arguments.
         """
         return self._parser.parse_args()
+
+    def print_help(self):
+        """Prints the help content."""
+        self._parser.print_help()

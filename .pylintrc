@@ -34,3 +34,6 @@ check-quote-consistency = yes
 
 [VARIABLES]
 allow-global-unused-variables = yes
+
+[FORMAT]
+max-line-length = 100
