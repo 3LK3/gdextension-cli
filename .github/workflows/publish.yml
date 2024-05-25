@@ -12,7 +12,7 @@ permissions:
 jobs:
   deploy:
 
-    environment: Production
+    environment: Release
     permissions:
       id-token: write  # IMPORTANT: this permission is mandatory for trusted publishing
 
