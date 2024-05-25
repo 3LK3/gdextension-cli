@@ -18,6 +18,11 @@ class CommandLineArgs:
         "Default: folder in current directory with name of the project"
     )
 
+    HELP_REPOSITORY_URL = (
+        "URL of a project template repository. "
+        "Default is https://github.com/3LK3/gdextension-template.git"
+    )
+
     def __init__(self):
         self._parser = argparse.ArgumentParser(prog="gdextension-cli")
         self._subcommands = self._parser.add_subparsers(dest="subcommand")
@@ -66,7 +71,7 @@ class CommandLineArgs:
             type=str,
             required=False,
             default="https://github.com/3LK3/gdextension-template.git",
-            help="URL of a project template repository",
+            help=self.HELP_REPOSITORY_URL,
         )
         from_group.add_argument(
             "--from-local",
