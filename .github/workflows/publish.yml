@@ -4,6 +4,7 @@ on:
   push:
     tags:
       - 'release-*'
+      - 'test-release-*'
 
 permissions:
   contents: read
@@ -32,9 +33,12 @@ jobs:
       - name: Build package
         run: hatch build
 
-      - run: |
-          echo "Tag name from GITHUB_REF_NAME: $GITHUB_REF_NAME"
-          echo "Tag name from github.ref_name: ${{ github.ref_name }}"
+      - name: Publish package to production
+        if: ${{ !startsWith(github.ref_name, 'release-') }}
+        uses: pypa/gh-action-pypi-publish@release/v1
 
-#      - name: Publish package
-#        uses: pypa/gh-action-pypi-publish@release/v1
+      - name: Publish package to production
+        if: ${{ !startsWith(github.ref_name, 'test-release-') }}
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          repository-url: https://test.pypi.org/legacy/
