@@ -34,11 +34,11 @@ jobs:
         run: hatch build
 
       - name: Publish package to production
-        if: ${{ !startsWith(github.ref_name, 'release-') }}
+        if: ${{ startsWith(github.ref_name, 'release-') }}
         uses: pypa/gh-action-pypi-publish@release/v1
 
-      - name: Publish package to production
-        if: ${{ !startsWith(github.ref_name, 'test-release-') }}
+      - name: Publish package to testing
+        if: ${{ startsWith(github.ref_name, 'test-release-') }}
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
           repository-url: https://test.pypi.org/legacy/
