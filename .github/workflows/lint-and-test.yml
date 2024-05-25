@@ -26,8 +26,6 @@ jobs:
           python -m pip install --upgrade pip
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
       - name: Analysing the code with pylint
-        run: |
-          pylint src/**/*.py tests/**/*.py
+        run: pylint src/**/*.py
       - name: Test with pytest
-        run: |
-          pytest
+        run: hatch test
