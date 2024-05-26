@@ -6,6 +6,7 @@ import logging
 
 from .command_line_args import CommandLineArgs
 from .commands.new_project_from_local import NewProjectFromLocalCommand
+from .commands.new_project_from_git import NewProjectFromGitCommand
 
 
 def main_cli():
@@ -20,7 +21,7 @@ def main_cli():
             if args.from_local:
                 NewProjectFromLocalCommand.from_arguments(args).run()
             elif args.from_git:
-                print("from_git: not implemented")
+                NewProjectFromGitCommand.from_arguments(args).run()
             else:
                 raise AssertionError(
                     "Expected arguments '--from-local' or '--from-git'"

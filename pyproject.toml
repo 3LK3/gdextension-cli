@@ -10,7 +10,8 @@ classifiers = [
 ]
 requires-python = ">=3.8"
 dependencies = [
-    "Jinja2==3.1.4"
+    "Jinja2==3.1.4",
+    "GitPython==3.1.43"
 ]
 dynamic = [
     "version"
