@@ -7,9 +7,8 @@ import logging
 from argparse import Namespace
 from pathlib import Path
 
-from git import Repo
-
 from gdextension_cli.commands.new_project_from_local import NewProjectFromLocalCommand
+from gdextension_cli.git import Repository
 
 
 class NewProjectFromGitCommand:
@@ -56,17 +55,12 @@ class NewProjectFromGitCommand:
         logging.info("Template repository: %s", self.template_repository_url)
 
         with tempfile.TemporaryDirectory() as temp_dir:
-            logging.debug(
-                "Using temp directory to clone project template: %s", temp_dir
-            )
             logging.info("Cloning template repository to %s", temp_dir)
-            repo = Repo.clone_from(self.template_repository_url, temp_dir)
-            new_project = NewProjectFromLocalCommand(
+            Repository(temp_dir).clone(self.template_repository_url)
+
+            NewProjectFromLocalCommand(
                 self.project_name,
                 self.project_path,
                 self.godot_version,
-                Path(repo.working_dir),
-            )
-            new_project.check_directories()
-            new_project.copy_non_template_files()
-            new_project.render_template_files()
+                temp_dir,
+            ).run_processes()
