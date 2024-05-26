@@ -43,3 +43,9 @@ You can also use your own template repository to create a new project.
 If you have a template on your local file system you can also create a project from there.
 
 `gdextension-cli new <NAME> --from-local /home/you/your_template`
+
+## Technical insides
+
+Uses the following python libraries:
+
+- [Jinja2](https://pypi.org/project/Jinja2/) used for templating new projects 
