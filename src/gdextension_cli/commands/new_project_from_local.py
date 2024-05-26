@@ -17,6 +17,7 @@ class NewProjectFromLocalCommand:
 
     TEMPLATE_FILE_EXTENSION = ".tmpl"
     GODOT_CPP_URL = "https://github.com/godotengine/godot-cpp"
+    IGNORED_DIRECTORIES = ["godot-cpp", "godot_cpp"]
 
     def __init__(
         self,
@@ -99,12 +100,14 @@ class NewProjectFromLocalCommand:
         """
         logging.info("Copying non template files ...")
         non_template_files = glob.glob(
-            f"[!godot-cpp/]**/*[!{self.TEMPLATE_FILE_EXTENSION}]",
+            f"**/*[!{self.TEMPLATE_FILE_EXTENSION}]",
             root_dir=self.template_path,
             recursive=True,
         )
 
         for file in non_template_files:
+            if self._should_ignore(file):
+                continue
             self._copy_file(file)
 
         self._copy_file(".gitignore")
@@ -173,3 +176,15 @@ class NewProjectFromLocalCommand:
         for part in self.project_name.lower().split("_"):
             class_name += part.capitalize()
         return class_name
+
+    def _should_ignore(self, file_path) -> bool:
+        """
+        Whether to ignore the given file or not.
+        :param file_path: The file path to be checked.
+        :return: True if the file should be ignored. False otherwise.
+        """
+        for ignored in self.IGNORED_DIRECTORIES:
+            if file_path.startswith(ignored):
+                logging.debug("Ignoring %s", file_path)
+                return True
+        return False
