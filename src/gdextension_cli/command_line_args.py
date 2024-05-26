@@ -33,14 +33,14 @@ class CommandLineArgs:
     def create(self):
         """Created all subcommands and arguments"""
         self._create_command_new()
-        self._create_command_build()
+        # self._create_command_build()
         self._subcommands.add_parser("help", help="Shows this help")
         return self
 
-    def _create_command_build(self):
-        """Creates the parser for the build project command"""
-        build_parser = self._subcommands.add_parser("build", help="Build a project")
-        build_parser.add_argument("path", type=str, help="Path of the project to build")
+    # def _create_command_build(self):
+    #     """Creates the parser for the build project command"""
+    #     build_parser = self._subcommands.add_parser("build", help="Build a project")
+    #     build_parser.add_argument("path", type=str, help="Path of the project to build")
 
     def _create_command_new(self):
         """Creates the parser for the new project command"""

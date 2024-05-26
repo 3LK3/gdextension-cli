@@ -26,8 +26,6 @@ def main_cli():
                 raise AssertionError(
                     "Expected arguments '--from-local' or '--from-git'"
                 )
-        case "build":
-            print("BUILD")
         case _:
             command_line.print_help()
 
