@@ -93,24 +93,16 @@ class NewProjectFromLocalCommand:
             "class_name": self._get_class_name(),
         }
 
-    def _copy_non_template_files(self):
+    def _check_directories(self):
         """
-        Copies all non template files from template_path to project_path.
-        Non template files are all file without the extension '.tmpl'.
+        Checks for project and template directories.
+        Creates project directory if it doesn't exist.
         """
-        logging.info("Copying non template files ...")
-        non_template_files = glob.glob(
-            f"**/*[!{self.TEMPLATE_FILE_EXTENSION}]",
-            root_dir=self.template_path,
-            recursive=True,
-        )
-
-        for file in non_template_files:
-            if self._should_ignore(file):
-                continue
-            self._copy_file(file)
-
-        self._copy_file(".gitignore")
+        if not self.template_path.exists():
+            raise FileNotFoundError(f"Template path not found: {self.template_path}")
+        if not self.project_path.exists():
+            logging.debug("Creating project directory at %s", self.project_path)
+            self.project_path.mkdir(parents=True)
 
     def _copy_file(self, file: Path | str):
         """
@@ -128,6 +120,39 @@ class NewProjectFromLocalCommand:
 
         logging.info("Copy file %s to %s", file, target_file)
         shutil.copy(source_file, target_file)
+
+    def _copy_non_template_files(self):
+        """
+        Copies all non template files from template_path to project_path.
+        Non template files are all file without the extension '.tmpl'.
+        """
+        logging.info("Copying non template files ...")
+        non_template_files = self._get_non_template_files()
+
+        for file in non_template_files:
+            if self._should_ignore(file):
+                continue
+            self._copy_file(file)
+
+        self._copy_file(".gitignore")
+
+    def _get_class_name(self) -> str:
+        class_name = ""
+        for part in self.project_name.lower().split("_"):
+            class_name += part.capitalize()
+        return class_name
+
+    def _get_non_template_files(self) -> list[str]:
+        """
+        Returns a list of all non-template files.
+        :return: All non-template files.
+        """
+        files = glob.glob(
+            "**/*",
+            root_dir=self.template_path,
+            recursive=True,
+        )
+        return [file for file in files if not file.endswith(self.TEMPLATE_FILE_EXTENSION)]
 
     def _render_template_files(self):
         """
@@ -159,23 +184,6 @@ class NewProjectFromLocalCommand:
 
             logging.info("Render template %s to %s", file, target_file)
             template_renderer.render_file(str(file), target_file)
-
-    def _check_directories(self):
-        """
-        Checks for project and template directories.
-        Creates project directory if it doesn't exist.
-        """
-        if not self.template_path.exists():
-            raise FileNotFoundError(f"Template path not found: {self.template_path}")
-        if not self.project_path.exists():
-            logging.debug("Creating project directory at %s", self.project_path)
-            self.project_path.mkdir(parents=True)
-
-    def _get_class_name(self) -> str:
-        class_name = ""
-        for part in self.project_name.lower().split("_"):
-            class_name += part.capitalize()
-        return class_name
 
     def _should_ignore(self, file_path) -> bool:
         """

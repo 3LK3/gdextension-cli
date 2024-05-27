@@ -7,25 +7,27 @@ import subprocess
 from gdextension_cli import __version__
 
 if __name__ == "__main__":
-    version = __version__.__version__
-    production_release = input("Do you want to create a production release? (yes/no): ")
-    production_release = True if production_release == "yes" else False
+    YES = "yes"
+    VERSION = __version__.__version__
 
-    tag_message = input("Tag message (default: '%s'): " % version)
-    if tag_message.strip() == "":
-        tag_message = version
+    PRODUCTION_RELEASE = False
+    if input("Create a production release? (yes/no): ") == YES:
+        PRODUCTION_RELEASE = True
+
+    TAG_MESSAGE = input(f"Tag message (default: '{VERSION}'): ")
+    if TAG_MESSAGE.strip() == "":
+        TAG_MESSAGE = VERSION
 
     # tags starting with 'release-' will trigger production release
-    tag_name = "release-%s" % version
-    if not production_release:
+    tag_name = f"release-{VERSION}"
+    if not PRODUCTION_RELEASE:
         # starting with 'test-release-' trigger test release to test.pypi
-        tag_name = "test-%s" % tag_name
+        tag_name = f"test-{tag_name}"
 
-    print("Creating release %s" % version)
-    print("With tag: %s" % tag_name)
-    print("With tag message: '%s'" % tag_message)
+    print(f"Creating release {VERSION}")
+    print(f"With tag: {tag_name}")
+    print(f"With tag message: '{TAG_MESSAGE}'")
 
-    confirm = input("Are you sure? (yes/no): ")
-    if confirm == "yes":
-        subprocess.run(["git", "tag", "-a", tag_name, "-m", tag_message])
-        subprocess.run(["git", "push", "--follow-tags"])
+    if (confirm := input("Are you sure? (yes/no): ")) == YES:
+        subprocess.run(["git", "tag", "-a", tag_name, "-m", TAG_MESSAGE], check=True)
+        subprocess.run(["git", "push", "--follow-tags"], check=True)
