@@ -1,3 +1,5 @@
+[![PyPI version](https://badge.fury.io/py/gdextension-cli.svg)](https://badge.fury.io/py/gdextension-cli)
+
 # gdextension-cli
 
 A command line interface for Godot's GDExtension.
