@@ -34,6 +34,16 @@ This will create a project called <NAME> in a new directory relative to your cur
 
 By default, https://github.com/3LK3/gdextension-template is used as the project template.
 
+In order to install the latest version of Godot (godot-cpp) with the default template you can use:
+
+`gdextension-cli new <NAME> --godot-version master --template-version main`
+
+First we are using
+
+- *godot-version* **master** because this is the main branch
+  of [godot-cpp](https://github.com/godotengine/godot-cpp).
+- *template-version* **main** is the main branch of the template repository.
+
 #### From a custom git repository
 
 You can also use your own template repository to create a new project.

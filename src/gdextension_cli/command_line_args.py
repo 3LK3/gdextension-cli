@@ -23,6 +23,16 @@ class CommandLineArgs:
         "Default is https://github.com/3LK3/gdextension-template.git"
     )
 
+    HELP_TEMPLATE_VERSION = (
+        "Branch name in template repository. "
+        "ONLY valid in combination with --from-git. Default: 4.2"
+    )
+
+    HELP_GODOT_VERSION = (
+        "Godot version (branch name in godot-cpp repository)."
+        "Use master for latest version. Default: 4.2"
+    )
+
     def __init__(self):
         self._parser = argparse.ArgumentParser(prog="gdextension-cli")
         self._subcommands = self._parser.add_subparsers(dest="subcommand")
@@ -36,11 +46,6 @@ class CommandLineArgs:
         # self._create_command_build()
         self._subcommands.add_parser("help", help="Shows this help")
         return self
-
-    # def _create_command_build(self):
-    #     """Creates the parser for the build project command"""
-    #     build_parser = self._subcommands.add_parser("build", help="Build a project")
-    #     build_parser.add_argument("path", type=str, help="Path of the project to build")
 
     def _create_command_new(self):
         """Creates the parser for the new project command"""
@@ -61,7 +66,14 @@ class CommandLineArgs:
             "--godot-version",
             type=str,
             default="4.2",
-            help="Godot version and branch name for template repositories",
+            help=self.HELP_GODOT_VERSION,
+        )
+        new_parser.add_argument(
+            "-t",
+            "--template-version",
+            type=str,
+            default="4.2",
+            help=self.HELP_TEMPLATE_VERSION,
         )
 
         from_group = new_parser.add_mutually_exclusive_group(required=False)

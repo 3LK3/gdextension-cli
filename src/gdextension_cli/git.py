@@ -15,13 +15,14 @@ class Repository:
     def __init__(self, root_path: Path | str):
         self.root_path = Path(root_path)
 
-    def clone(self, url: str) -> "Repository":
+    def clone(self, url: str, branch: str) -> "Repository":
         """
         Clones a git repository.
         :param url: The url of the repository.
+        :param branch: The branch of the repository.
         :return: The repository itself.
         """
-        self._run_git("clone", url, str(self.root_path))
+        self._run_git("clone", "-b", branch, url, str(self.root_path))
         return self
 
     def init(self) -> "Repository":
