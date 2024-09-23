@@ -25,12 +25,12 @@ class CommandLineArgs:
 
     HELP_TEMPLATE_VERSION = (
         "Branch name in template repository. "
-        "ONLY valid in combination with --from-git. Default: 4.2"
+        "ONLY valid in combination with --from-git. Default: 4.3"
     )
 
     HELP_GODOT_VERSION = (
         "Godot version (branch name in godot-cpp repository)."
-        "Use master for latest version. Default: 4.2"
+        "Use master for latest version. Default: 4.3"
     )
 
     def __init__(self):
@@ -65,14 +65,14 @@ class CommandLineArgs:
             "-g",
             "--godot-version",
             type=str,
-            default="4.2",
+            default="4.3",
             help=self.HELP_GODOT_VERSION,
         )
         new_parser.add_argument(
             "-t",
             "--template-version",
             type=str,
-            default="4.2",
+            default="4.3",
             help=self.HELP_TEMPLATE_VERSION,
         )
 
